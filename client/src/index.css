@@ -4,6 +4,12 @@
 
 @theme{
   --color-primary: #F84565;
+  --color-primary: #8c7225;
+  --color-zinmyo-100: #B78628;
+  --color-zinmyo-200: #c69320;
+  --color-zinmyo-300: #DBA514;
+  --color-zinmyo-400: #EEB609;
+  --color-zinmyo-500: #FFC201;
   --color-primary-dull: #D63854;
 }
 
