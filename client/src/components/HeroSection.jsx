@@ -9,16 +9,10 @@ const HeroSection = () => {
   return (
     <div className='flex flex-col items-start justify-center gap-4 px-6 md:px-16
     lg:px-36 bg-[url("/heropcineplex.jpg")] bg-cover bg-center h-screen'>
-        <div className="flex justify-center items-center gap-1 mt-20 max-md:hidden">
-            <img src="/1.png" alt="" className="max-h-8 lg:h-8" />
-            <img src="/2.png" alt="" className="max-h-8 lg:h-8" />
-            <img src="/3.png" alt="" className="max-h-8 lg:h-8" />
-            <img src="/4.png" alt="" className="max-h-8 lg:h-8" />
-            <img src="/5.png" alt="" className="max-h-8 lg:h-8" />
-        </div>
+        
         
 
-        <h1 className='text-5xl md:text-[70px] md: leading-18 font-semibold'>PCineplex</h1>
+        <h1 className='text-5xl md:text-[70px] md: leading-18 font-semibold mt-20'>PCineplex</h1>
 
         <div className='flex items-center gap-4 text-white text-2xl'>
             <span>Enjoy 10% Cashback</span>
