@@ -3,6 +3,7 @@ import marvelLogo from './marvelLogo.svg'
 import googlePlay from './googlePlay.svg'
 import appStore from './appStore.svg'
 import screenImage from './screenImage.svg'
+import screenImage2 from './screenImage2.svg'
 import profile from './profile.png'
 
 export const assets = {
@@ -11,6 +12,7 @@ export const assets = {
     googlePlay,
     appStore,
     screenImage,
+    screenImage2,
     profile
 }
 
