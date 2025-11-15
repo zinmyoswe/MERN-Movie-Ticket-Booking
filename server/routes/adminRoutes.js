@@ -5,10 +5,10 @@ import { getAllBookings, getAllShows, getDashboardData, isAdmin } from "../contr
 const adminRouter = express.Router();
 
 
-adminRouter.post('/is-admin',protectAdmin ,isAdmin)
-adminRouter.post('/dashboard',protectAdmin ,getDashboardData)
-adminRouter.post('/all-shows',protectAdmin ,getAllShows)
-adminRouter.post('/all-bookings',protectAdmin ,getAllBookings)
+adminRouter.get('/is-admin',protectAdmin ,isAdmin)
+adminRouter.get('/dashboard',protectAdmin ,getDashboardData)
+adminRouter.get('/all-shows',protectAdmin ,getAllShows)
+adminRouter.get('/all-bookings',protectAdmin ,getAllBookings)
 
 
 export default adminRouter;
