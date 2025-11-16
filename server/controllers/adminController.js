@@ -1,5 +1,7 @@
 import Show from "../models/Show.js";
 import Booking from "../models/Booking.js";
+import User from "../models/User.js";
+
 
 //API to check if user is admin
 export const isAdmin = async (req, res) => {
@@ -12,7 +14,7 @@ export const getDashboardData = async (req, res) => {
     const bookings = await Booking.find({isPaid: true});
     const activeShows = await Show.find({showDateTime: {$gte: new Date()}}).populate('movie');
 
-    const totalUser = await UserActivation.countDocuments();
+    const totalUser = await User.countDocuments();
 
     const dashboardData = {
         totalBookings: bookings.length,
