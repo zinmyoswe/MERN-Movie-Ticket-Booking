@@ -1,6 +1,9 @@
 import { Inngest } from "inngest";
 import User from '../models/User.js';
+import connectDB from "../configs/db.js";
 
+// ⭐ Inngest worker DB connection
+await connectDB();
 
 // Create a client to send and receive events
 export const inngest = new Inngest({ id: "movie-ticket-booking" });
@@ -48,4 +51,8 @@ const syncUserUpdation = inngest.createFunction(
 );
 
 // Create an empty array where we'll export future Inngest functions
-export const functions = [syncUserCreation, syncUserDeletion, syncUserUpdation];
+export const functions = [
+  syncUserCreation,
+  syncUserDeletion,
+  syncUserUpdation
+];
