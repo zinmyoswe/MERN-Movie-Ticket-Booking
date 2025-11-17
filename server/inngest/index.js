@@ -2,6 +2,7 @@ import { Inngest } from "inngest";
 import User from '../models/User.js';
 import connectDB from "../configs/db.js";
 import Booking from '../models/Booking.js';
+import Show from "../models/Show.js";
 
 // ⭐ Inngest worker DB connection
 await connectDB();
