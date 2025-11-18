@@ -2,7 +2,6 @@ import Show from "../models/Show.js";
 import Booking from "../models/Booking.js";
 import User from "../models/User.js";
 
-
 //API to check if user is admin
 export const isAdmin = async (req, res) => {
   res.json({success: true, isAdmin: true})
@@ -54,5 +53,9 @@ export const getAllBookings = async (req, res) => {
     res.json({success: false, message: error.message})
   }
 }
+
+
+
+
 
 

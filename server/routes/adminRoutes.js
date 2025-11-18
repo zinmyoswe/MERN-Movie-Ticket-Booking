@@ -11,4 +11,5 @@ adminRouter.get('/all-shows',protectAdmin ,getAllShows)
 adminRouter.get('/all-bookings',protectAdmin ,getAllBookings)
 
 
+
 export default adminRouter;
