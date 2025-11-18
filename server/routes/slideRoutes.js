@@ -1,5 +1,5 @@
 import express from 'express';
-import { createSlide, getSlides, getSlideById, updateSlide, deleteSlide } from '../controllers/SlideController.js';
+import { createSlide, getSlides, getSlideById, updateSlide, deleteSlide } from '../controllers/slideController.js';
 import { protectAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
