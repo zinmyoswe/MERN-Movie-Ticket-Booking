@@ -103,7 +103,7 @@ const AddShows = () => {
 
   return nowPlayingMovies.length > 0 ? (
     <>
-      <div className='bg-white'>
+      <div className='addshowzin'>
       <Title text1="Add" text2="Shows" />
       <p className='mt-10 text-lg font-medium'>Now Playing Movies</p>
       <div className='overflow-x-auto pb-4'>
