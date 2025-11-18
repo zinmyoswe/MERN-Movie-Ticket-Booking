@@ -36,3 +36,39 @@ input::-webkit-inner-spin-button{
 ::-webkit-calendar-picker-indicator{
   filter: invert(1);
 }
+
+
+/* Carousel */
+
+/* arrows (prev/next) - color uses currentColor so set color */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ffffff;            /* arrow color */
+  width: 24px !important;
+  height: 24px !important;
+  padding: 1px !important;
+  margin: 6px !important;
+  background: none !important; /* optional background circle */
+  border-radius: 9999px;
+}
+
+/* If arrows are SVGs, ensure stroke/fill are visible */
+.swiper-button-next svg,
+.swiper-button-prev svg {
+  stroke: #ffffff;
+  fill: #ffffff;
+}
+
+/* pagination bullets (dots) */
+.swiper-pagination-bullet {
+  background: whitesmoke !important;
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+}
+
+/* active bullet */
+.swiper-pagination-bullet-active {
+  background: #ffffff;
+  transform: scale(1.25);
+}

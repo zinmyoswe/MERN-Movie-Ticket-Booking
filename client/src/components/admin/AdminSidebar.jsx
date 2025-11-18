@@ -16,6 +16,8 @@ const AdminSidebar = () => {
     {name: 'Add Shows', path: '/admin/add-shows', icon: PlusSquareIcon},
     {name: 'List Shows', path: '/admin/list-shows', icon: ListIcon},
     {name: 'List Bookings', path: '/admin/list-bookings', icon: ListCollapseIcon},
+    {name: 'Slides', path: '/admin/list-slides', icon: ImageIcon},
+    {name: 'Add Slide', path: '/admin/add-slide', icon: PlusSquareIcon},
     
   ]
   return (
@@ -30,7 +32,7 @@ const AdminSidebar = () => {
               key={index}
               to={link.path}
               className={({ isActive }) => `relative flex items-center max-md:justify-center
-            gap-2 w-full py-2.5 min-md:pl-10 first:mt-6 text-gray-400
+            gap-2 w-full py-2.5 md:pl-10 first:mt-6 text-gray-400
             ${isActive && 'bg-primary/15 text-primary group'}`}>
                 {({ isActive }) =>(
                   <>

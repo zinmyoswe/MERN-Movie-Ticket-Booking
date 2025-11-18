@@ -14,6 +14,10 @@ import Dashboard from './pages/admin/Dashboard.jsx'
 import AddShows from './pages/admin/AddShows.jsx'
 import ListShows from './pages/admin/ListShows.jsx'
 import ListBookings from './pages/admin/ListBookings.jsx'
+import AddSlide from './pages/admin/AddSlide.jsx'
+import ListSlide from './pages/admin/ListSlide.jsx'
+import EditSlide from './pages/admin/EditSlide.jsx'
+import DeleteSlide from './pages/admin/DeleteSlide.jsx'
 import { useAppContext } from './context/AppContext.jsx'
 import { SignIn } from '@clerk/clerk-react'
 import Loading from './components/Loading.jsx'
@@ -45,6 +49,10 @@ const App = () => {
           <Route path='add-shows' element={<AddShows/>} />
           <Route path='list-shows' element={<ListShows/>} />
           <Route path='list-bookings' element={<ListBookings/>} />
+          <Route path='add-slide' element={<AddSlide/>} />
+          <Route path='list-slides' element={<ListSlide/>} />
+          <Route path='edit-slide/:id' element={<EditSlide/>} />
+          <Route path='delete-slide/:id' element={<DeleteSlide/>} />
         </Route>
       </Routes>
       {!isAdminRoute && <Footer />}
