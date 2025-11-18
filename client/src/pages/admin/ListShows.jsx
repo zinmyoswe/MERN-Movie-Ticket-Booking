@@ -5,59 +5,60 @@ import { dateFormat } from '../../lib/dateFormat';
 import { useAppContext } from '../../context/AppContext';
 
 const ListShows = () => {
-
-  const {axios, getToken, user} = useAppContext()
-
+  const { axios, getToken, user } = useAppContext()
   const currency = import.meta.env.VITE_CURRENCY
 
   const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getAllShows = async () =>{
-    try{
-      const {data} = await axios.get('/api/admin/all-shows',{
-        headers: { Authorization: `Bearer ${await getToken()}`}
+  const getAllShows = async () => {
+    try {
+      const { data } = await axios.get('/api/admin/all-shows', {
+        headers: { Authorization: `Bearer ${await getToken()}` }
       });
       setShows(data.shows)
       setLoading(false)
-    }
-    catch(error){
+    } catch (error) {
       console.error(error);
     }
   }
 
   useEffect(() => {
-    if(user){
+    if (user) {
       getAllShows();
     }
   }, [user]);
+
   return !loading ? (
     <>
       <Title text1="List" text2="Shows" />
-      <div className='max-w-4xl mt-6 overflow-x-auto'>
-        <table className='w-full border-collapse rounded-md overflow-hidden text-nowrap'>
-          <thead>
-             <tr className='bg-primary/20 text-left text-white'>
-              <th className='p-2 font-medium pl-5'>Movie Name</th>
-              <th className='p-2 font-medium pl-5'>Show Time</th>
-              <th className='p-2 font-medium pl-5'>Total Bookings</th>
-              <th className='p-2 font-medium pl-5'>Earnings</th>
-             </tr>
+
+      <div className="max-w-6xl mt-6 overflow-x-auto rounded-lg shadow-lg border border-gray-200">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-primary text-white">
+            <tr>
+              <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Movie Name</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Show Time</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Total Bookings</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Earnings</th>
+            </tr>
           </thead>
-          <tbody className='text-sm font-light'>
-              {shows.map((show, index) => (
-                <tr key={index} className='border-b border-primary/10 bg-primary/5 even:bg-primary/10'>
-                  <td className='p-2 min-w-45 pl-5'>{show.movie.title}</td>
-                  <td className='p-2'>{dateFormat(show.showDateTime)}</td>
-                  <td className='p-2'>{Object.keys(show.occupiedSeats).length}</td>
-                  <td className='p-2'>{currency} {Object.keys(show.occupiedSeats).length * show.showPrice}</td>
-                </tr>
-              ))}
+          <tbody className="bg-white divide-y divide-gray-200 text-sm">
+            {shows.map((show, index) => (
+              <tr key={index} className="hover:bg-blue-50 transition-colors text-primary">
+                <td className="px-6 py-3">{show.movie.title}</td>
+                <td className="px-6 py-3">{dateFormat(show.showDateTime)}</td>
+                <td className="px-6 py-3">{Object.keys(show.occupiedSeats).length}</td>
+                <td className="px-6 py-3 font-medium text-green-600">
+                  {currency} {Object.keys(show.occupiedSeats).length * show.showPrice}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
     </>
-  ): <Loading />
+  ) : <Loading />
 }
 
 export default ListShows

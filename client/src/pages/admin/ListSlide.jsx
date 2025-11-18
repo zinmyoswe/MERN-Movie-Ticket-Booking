@@ -5,7 +5,7 @@ import { useAppContext } from '../../context/AppContext'
 import { useNavigate } from 'react-router-dom'
 
 const ListSlide = () => {
-  const { axios, getToken, user } = useAppContext()
+  const { axios, user } = useAppContext()
   const [slides, setSlides] = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
@@ -25,37 +25,59 @@ const ListSlide = () => {
   }, [user])
 
   return !loading ? (
-    <>
+    <div className="bg-white min-h-screen p-6">
       <Title text1="List" text2="Slides" />
-      <div className='mt-6 max-w-4xl overflow-x-auto'>
-        <table className='w-full border-collapse rounded-md overflow-hidden text-nowrap'>
-          <thead>
-            <tr className='bg-primary/20 text-left text-white'>
-              <th className='p-2 font-medium pl-5'>Slide ID</th>
-              <th className='p-2 font-medium pl-5'>Image</th>
-              <th className='p-2 font-medium pl-5'>Title</th>
-              <th className='p-2 font-medium pl-5'>Button</th>
-              <th className='p-2 font-medium pl-5'>Actions</th>
-            </tr>
-          </thead>
-          <tbody className='text-sm font-light'>
-            {slides.map((s, i) => (
-              <tr key={i} className='border-b border-primary/10 bg-primary/5 even:bg-primary/10'>
-                <td className='p-2 min-w-45 pl-5'>{s.slideID}</td>
-                <td className='p-2'><img src={s.slideImage} alt='' className='h-12 object-cover rounded' /></td>
-                <td className='p-2'>{s.slide_title || '—'}</td>
-                <td className='p-2'>{s.slidebutton || '—'}</td>
-                <td className='p-2'>
-                  <button onClick={() => navigate(`/admin/edit-slide/${s._id}`)} className='mr-3 text-blue-600'>Edit</button>
-                  <button onClick={() => navigate(`/admin/delete-slide/${s._id}`)} className='text-red-600'>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
+        {slides.map((slide) => (
+          <div
+            key={slide._id}
+            className="bg-white border border-gray-200 shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition flex flex-col md:flex-row"
+          >
+            {/* Left: Slide Image */}
+            <div className="md:w-1/2 w-full h-48 md:h-auto">
+              <img
+                src={slide.slideImage}
+                alt={slide.slide_title || slide.slideID}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Right: Slide Details */}
+            <div className="md:w-1/2 w-full p-4 flex flex-col justify-between">
+              <div className="space-y-2">
+                <h3 className="text-gray-800 font-semibold text-lg truncate">{slide.slide_title || '—'}</h3>
+                <p className="text-gray-700 text-sm">
+                  <span className="font-medium">Slide ID:</span> {slide.slideID}
+                </p>
+                <p className="text-gray-700 text-sm">
+                  <span className="font-medium">Button:</span> {slide.slidebutton || '—'}
+                </p>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 mt-4">
+                <button
+                  onClick={() => navigate(`/admin/edit-slide/${slide._id}`)}
+                  className="border border-primary text-primary bg-transparent px-6 py-1 rounded-full hover:bg-primary hover:text-white transition-colors duration-200 cursor-pointer"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => navigate(`/admin/delete-slide/${slide._id}`)}
+                  className="bg-red-600 text-white px-6 py-1 rounded-full hover:bg-red-700 transition-colors duration-200 cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-    </>
-  ) : <Loading />
+    </div>
+  ) : (
+    <Loading />
+  )
 }
 
 export default ListSlide

@@ -1,0 +1,17 @@
+
+body{
+    color: #171717 !important;
+    background-color: white !important;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(50%) grayscale(100%) brightness(60%);
+  cursor: pointer;
+}
+
+*{
+  font-family: "Outfit", sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: #999999 whitesmoke !important;
+}
+

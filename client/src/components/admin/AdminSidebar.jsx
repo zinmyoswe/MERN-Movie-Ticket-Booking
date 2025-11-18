@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { assets } from '../../assets/assets'
-import { ImageIcon, LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon } from 'lucide-react'
+import {
+  ImageIcon,
+  LayoutDashboardIcon,
+  ListCollapseIcon,
+  ListIcon,
+  PlusSquareIcon,
+  ChevronLeft,
+  ChevronRight,
+  PanelLeftClose,
+  PanelRightClose
+} from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 const AdminSidebar = () => {
+
+  const [collapsed, setCollapsed] = useState(false)
 
   const user = {
     firstname: 'Admin',
@@ -12,39 +24,92 @@ const AdminSidebar = () => {
   }
 
   const adminNavlinks = [
-    {name: 'Dashboard', path: '/admin', icon: LayoutDashboardIcon},
-    {name: 'Add Shows', path: '/admin/add-shows', icon: PlusSquareIcon},
-    {name: 'List Shows', path: '/admin/list-shows', icon: ListIcon},
-    {name: 'List Bookings', path: '/admin/list-bookings', icon: ListCollapseIcon},
-    {name: 'Slides', path: '/admin/list-slides', icon: ImageIcon},
-    {name: 'Add Slide', path: '/admin/add-slide', icon: PlusSquareIcon},
-    
+    { name: 'Dashboard', path: '/admin', icon: LayoutDashboardIcon },
+    { name: 'Add Shows', path: '/admin/add-shows', icon: PlusSquareIcon },
+    { name: 'List Shows', path: '/admin/list-shows', icon: ListIcon },
+    { name: 'List Bookings', path: '/admin/list-bookings', icon: ListCollapseIcon },
+    { name: 'Slides', path: '/admin/list-slides', icon: ImageIcon },
+    { name: 'Add Slide', path: '/admin/add-slide', icon: PlusSquareIcon },
   ]
-  return (
-    <div className='h-[calc(100vh-64px)] md:flex flex-col items-center pt-8
-    max-w-13 md:max-w-60 w-full border-r border-gray-300/20 text-sm '>
-        <img src={user.imageUrl} alt="sidebar" className='h-9 md:h-14 w-9 md:w-14 rounded-full mx-auto' />
-        <p className='mt-2 text-base max-md:hidden'>{user.firstname} {user.lastname}</p>
 
-        <div className='w-full'>
-          {adminNavlinks.map((link, index) =>(
-            <NavLink 
-              key={index}
-              to={link.path}
-              className={({ isActive }) => `relative flex items-center max-md:justify-center
-            gap-2 w-full py-2.5 md:pl-10 first:mt-6 text-gray-400
-            ${isActive && 'bg-primary/15 text-primary group'}`}>
-                {({ isActive }) =>(
-                  <>
-                    <link.icon className='w-5 h-5' />
-                    <p className='max-md:hidden'>{link.name}</p>
-                    <span className={`w-1.5 h-10 rounded-l right-0 absolute
-                      ${isActive && 'bg-primary'}`} />
-                  </>
+  return (
+    <div
+      className={`h-[calc(100vh-64px)] flex flex-col relative border-r border-gray-200/40 bg-white shadow-sm
+      transition-all duration-300 ease-in-out
+      ${collapsed ? 'w-20' : 'w-60'}`}
+    >
+
+      {/* Toggle Button */}
+      <button
+        className="absolute -right-3 top-4 z-20 bg-white border border-gray-200 rounded-full shadow
+        w-7 h-7 flex items-center justify-center
+        hover:bg-gray-100 transition"
+        onClick={() => setCollapsed(!collapsed)}
+      >
+        {collapsed ? (
+          <PanelRightClose className="w-4 h-4 text-gray-500 transition-transform" />
+        ) : (
+          <PanelLeftClose className="w-4 h-4  text-gray-500 transition-transform" />
+          
+        )}
+      </button>
+
+      {/* Profile Section */}
+      <div className={`flex flex-col items-center py-6 transition-all duration-300`}>
+        <img
+          src={user.imageUrl}
+          alt="Admin"
+          className="h-14 w-14 rounded-full border border-gray-300 shadow-md object-cover"
+        />
+        {!collapsed && (
+          <p
+            className="mt-3 text-base font-medium text-gray-700 opacity-100 transition-opacity duration-300"
+          >
+            {user.firstname} {user.lastname}
+          </p>
+        )}
+      </div>
+
+      {/* Nav Items */}
+      <div className="mt-4 w-full flex-1">
+        {adminNavlinks.map((link, index) => (
+          <NavLink
+            key={index}
+            to={link.path}
+            className={({ isActive }) =>
+              `relative group flex items-center
+              gap-3 w-full py-3 px-5 text-gray-500 font-medium
+              transition-all duration-200 cursor-pointer
+              hover:bg-gray-100 hover:text-gray-800
+              ${isActive ? 'text-primary bg-primary/10 font-semibold' : ''}`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                {/* Icon */}
+                <link.icon
+                  className={`w-5 h-5 transition duration-200 
+                  ${isActive ? 'text-primary' : 'text-gray-500 group-hover:text-gray-700'}`}
+                />
+
+                {/* Label - Hide when collapsed */}
+                {!collapsed && (
+                  <p className="whitespace-nowrap transition-opacity duration-300">
+                    {link.name}
+                  </p>
                 )}
-            </NavLink>
-          ))}
-        </div>
+
+                {/* Active Indicator */}
+                {isActive && (
+                  <span
+                    className={`absolute right-0 w-1.5 h-10 bg-primary rounded-l-full`}
+                  />
+                )}
+              </>
+            )}
+          </NavLink>
+        ))}
+      </div>
     </div>
   )
 }

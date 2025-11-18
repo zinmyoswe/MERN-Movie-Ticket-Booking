@@ -17,7 +17,7 @@ const AddSlide = () => {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
-    if (!slideID || !slideImage) return toast.error('slideID and slideImage are required')
+    if (!slideID || !slideImage) return toast.error('Slide ID and Slide Image are required')
     try {
       setLoading(true)
       const payload = {
@@ -30,7 +30,7 @@ const AddSlide = () => {
       }
       const { data } = await axios.post('/api/slide', payload, { headers: { Authorization: `Bearer ${await getToken()}` } })
       if (data.success) {
-        toast.success('Slide added')
+        toast.success('Slide added successfully')
         navigate('/admin/list-slides')
       } else {
         toast.error(data.message || 'Failed to add slide')
@@ -43,34 +43,92 @@ const AddSlide = () => {
   }
 
   return (
-    <>
+    <div className="bg-white min-h-screen p-6">
       <Title text1="Add" text2="Slide" />
-      <div className='mt-6 max-w-2xl'>
-        <label className='block text-sm mb-1'>Slide ID *</label>
-        <input value={slideID} onChange={(e) => setSlideID(e.target.value)} className='w-full p-2 rounded border' />
 
-        <label className='block text-sm mt-3 mb-1'>Slide Image URL *</label>
-        <input value={slideImage} onChange={(e) => setSlideImage(e.target.value)} className='w-full p-2 rounded border' />
+      <div className="mt-6 max-w-2xl bg-white border border-gray-200 rounded-xl shadow-md p-6 space-y-4">
+        
+        {/* Slide ID */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Slide ID *</label>
+          <input
+            value={slideID}
+            onChange={(e) => setSlideID(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition"
+            placeholder="Enter Slide ID"
+          />
+        </div>
 
-        <label className='block text-sm mt-3 mb-1'>Slide Title</label>
-        <input value={slideTitle} onChange={(e) => setSlideTitle(e.target.value)} className='w-full p-2 rounded border' />
+        {/* Slide Image */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Slide Image URL *</label>
+          <input
+            value={slideImage}
+            onChange={(e) => setSlideImage(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition"
+            placeholder="https://example.com/image.jpg"
+          />
+        </div>
 
-        <label className='block text-sm mt-3 mb-1'>Slide Button Text</label>
-        <input value={slideButton} onChange={(e) => setSlideButton(e.target.value)} className='w-full p-2 rounded border' />
+        {/* Slide Title */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Slide Title</label>
+          <input
+            value={slideTitle}
+            onChange={(e) => setSlideTitle(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition"
+            placeholder="Enter Slide Title"
+          />
+        </div>
 
-        <label className='block text-sm mt-3 mb-1'>Movie Details (JSON or leave empty)</label>
-        <textarea rows={4} value={movieDetails} onChange={(e) => setMovieDetails(e.target.value)} className='w-full p-2 rounded border' />
+        {/* Slide Button */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Slide Button Text</label>
+          <input
+            value={slideButton}
+            onChange={(e) => setSlideButton(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition"
+            placeholder="Enter Button Text"
+          />
+        </div>
 
-        <label className='block text-sm mt-3 mb-1'>Movie Trailers (JSON, e.g. Youtube embed object)</label>
-        <textarea rows={3} value={movieTrailers} onChange={(e) => setMovieTrailers(e.target.value)} className='w-full p-2 rounded border' />
+        {/* Movie Details */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Movie Details (JSON or leave empty)</label>
+          <textarea
+            rows={4}
+            value={movieDetails}
+            onChange={(e) => setMovieDetails(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition resize-none"
+            placeholder='{"title":"Movie Name","genre":"Action"}'
+          />
+        </div>
 
-        <div className='mt-4'>
-          <button onClick={handleSubmit} disabled={loading} className='bg-primary text-white px-4 py-2 rounded'>
+        {/* Movie Trailers */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Movie Trailers (JSON, e.g., YouTube embed object)</label>
+          <textarea
+            rows={3}
+            value={movieTrailers}
+            onChange={(e) => setMovieTrailers(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition resize-none"
+            placeholder='{"youtube":"https://youtube.com/..."}'
+          />
+        </div>
+
+        {/* Submit Button */}
+        <div className="mt-4">
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-md hover:bg-primary-dark transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             {loading ? 'Adding...' : 'Add Slide'}
           </button>
         </div>
+
       </div>
-    </>
+    </div>
   )
 }
 
