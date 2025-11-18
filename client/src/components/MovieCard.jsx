@@ -9,9 +9,9 @@ const MovieCard = ({movie}) => {
 
     const {image_base_url} = useAppContext()
   return (
-    <div className='flex flex-col justify-between p-3 bg-zinc-900 rounded-2xl hover:-translate-y-1 transition duration -300 w-56'>
+    <div className='flex flex-col justify-between p-1 bg-zinc-950 rounded-2xl hover:-translate-y-1 transition duration -300 w-48 md:w-56 lg:w-56'>
         <img onClick={() => {navigate(`/movies/${movie._id}`); scrollTo(0,0)}} 
-        src={image_base_url + movie.poster_path} alt="" className='rounded-lg h-56 w-full object-fill object-right-bottom cursor-pointer' />
+        src={image_base_url + movie.poster_path} alt="" className='rounded-lg  w-full object-fill object-right-bottom cursor-pointer' />
     
      <p className='font-semibold mt-2 truncate'>{movie.title}</p>
 
