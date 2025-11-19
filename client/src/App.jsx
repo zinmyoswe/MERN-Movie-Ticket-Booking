@@ -24,9 +24,16 @@ import EditCinema from './pages/admin/EditCinema.jsx'
 import DeleteCinema from './pages/admin/DeleteCinema.jsx'
 import CinemaSection from './components/CinemaSection.jsx'
 import CinemaDetail from './components/CinemaDetail.jsx'
+// Promotion Admin Pages
+import ListPromotion from './pages/admin/ListPromotion.jsx'
+import EditPromotion from './pages/admin/EditPromotion.jsx'
+import DeletePromotion from './pages/admin/DeletePromotion.jsx'
 import { useAppContext } from './context/AppContext.jsx'
 import { SignIn } from '@clerk/clerk-react'
 import Loading from './components/Loading.jsx'
+import AddPromotion from './pages/admin/AddPromotion.jsx'
+import PromotionSection from './components/PromotionSection.jsx'
+import PromotionDetail from './components/PromotionDetail.jsx'
 
 const App = () => {
 
@@ -45,6 +52,8 @@ const App = () => {
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
         <Route path='/cinemas' element={<CinemaSection />} />
         <Route path='/cinemas/:id' element={<CinemaDetail />} />
+        <Route path='/promotions' element={<PromotionSection />} />
+        <Route path='/promotions/:id' element={<PromotionDetail />} />
         <Route path='/my-bookings' element={<MyBookings />} />
         <Route path='/loading/:nextUrl' element={<Loading />} />
         <Route path='/favourite' element={<Favourite />} />
@@ -65,6 +74,11 @@ const App = () => {
           <Route path='list-cinemas' element={<ListCinema/>} />
           <Route path='edit-cinema/:id' element={<EditCinema/>} />
           <Route path='delete-cinema/:id' element={<DeleteCinema/>} />
+          {/*  Promotion Routes */}
+          <Route path='add-promotion' element={<AddPromotion/>} />
+          <Route path='list-promotions' element={<ListPromotion />} /> {/* List all promotions */}
+          <Route path='edit-promotion/:id' element={<EditPromotion />} /> {/* Edit promotion */}
+          <Route path='delete-promotion/:id' element={<DeletePromotion />} /> {/* Delete promotion */}
         </Route>
       </Routes>
       {!isAdminRoute && <Footer />}

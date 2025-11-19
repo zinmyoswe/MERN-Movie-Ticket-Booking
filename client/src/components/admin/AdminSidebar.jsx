@@ -12,7 +12,8 @@ import {
   PanelRightClose,
   Theater,
   TvMinimalPlay,
-  FilePlusCorner
+  FilePlusCorner,
+  ImagesIcon
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
@@ -35,6 +36,9 @@ const AdminSidebar = () => {
     { name: 'Add Slide', path: '/admin/add-slide', icon: FilePlusCorner },
     { name: 'Cinemas', path: '/admin/list-cinemas', icon: Theater },
     { name: 'Add Cinema', path: '/admin/add-cinema', icon: FilePlusCorner },
+    //  Promotions
+    { name: 'Promotions', path: '/admin/list-promotions', icon: ImagesIcon },
+    { name: 'Add Promotion', path: '/admin/add-promotion', icon: FilePlusCorner },
   ]
 
   return (

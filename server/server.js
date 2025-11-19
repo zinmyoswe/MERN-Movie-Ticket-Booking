@@ -11,7 +11,9 @@ import adminRouter from './routes/adminRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import cinemaRouter from './routes/CinemaRoutes.js';
 import slideRouter from './routes/slideRoutes.js';
+import promotionRouter from './routes/PromotionRoutes.js';
 import { stripeWebhooks } from './controllers/stripeWebhooks.js';
+
 
 const app = express();
 const port = 3000;
@@ -37,5 +39,6 @@ app.use('/api/admin', adminRouter)
 app.use('/api/user', userRouter)
 app.use('/api/cinema', cinemaRouter)
 app.use('/api/slide', slideRouter)
+app.use('/api/promotion', promotionRouter);
 
 app.listen(port, ()=> console.log(`Server listening at http://localhost:${port}`));
