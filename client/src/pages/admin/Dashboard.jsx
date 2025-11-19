@@ -20,6 +20,9 @@ const Dashboard = () => {
   });
 
   const [loading, setLoading] = useState(true);
+  const [cinemaCache, setCinemaCache] = useState({})
+  const [page, setPage] = useState(1)
+  const [perPage] = useState(20)
 
   const dashboardCards = [
     {title: "Total Bookings", value: dashboardData.totalBookings || "0", icon: ChartLineIcon},
@@ -28,27 +31,63 @@ const Dashboard = () => {
     {title: "Total Users", value: dashboardData.totalUser || "0", icon: UsersIcon}
   ]
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = async (p = 1) => {
     try {
-      const { data } = await axios.get("/api/admin/dashboard", {
+      setLoading(true)
+      const { data } = await axios.get(`/api/admin/dashboard?page=${p}&perPage=${perPage}`, {
         headers: { Authorization: `Bearer ${await getToken()}` }
       })
 
       if (data.success) {
         setDashboardData(data.dashboardData)
-        setLoading(false)
       } else {
         toast.error(data.message)
       }
 
     } catch (error) {
       toast.error("Error fetching dashboard data")
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
-    if(user) fetchDashboardData();
-  }, [user]);
+    if (user) fetchDashboardData(page);
+  }, [user, page]);
+
+  // Fetch cinema names for active shows when needed
+  useEffect(() => {
+    const fetchMissingCinemas = async () => {
+      if (!dashboardData?.activeShows?.length) return;
+      const missing = new Set();
+      dashboardData.activeShows.forEach(show => {
+        if (Array.isArray(show.cinemas) && show.cinemas.length) {
+          show.cinemas.forEach(c => {
+            const id = typeof c === 'string' ? c : (c._id || c.id || null)
+            if (id && !cinemaCache[id]) missing.add(id)
+          })
+        }
+      })
+      if (missing.size === 0) return;
+
+      const ids = Array.from(missing)
+      try {
+        const promises = ids.map(id => axios.get(`/api/cinema/${id}`))
+        const results = await Promise.all(promises)
+        const newCache = {}
+        results.forEach(r => {
+          if (r.data && r.data.success && r.data.cinema) {
+            const c = r.data.cinema
+            newCache[c._id] = c.cinemaName || c.name || c.title || 'Unnamed Cinema'
+          }
+        })
+        if (Object.keys(newCache).length) setCinemaCache(prev => ({ ...prev, ...newCache }))
+      } catch (err) {
+        console.error('Failed to fetch cinemas for dashboard', err)
+      }
+    }
+    fetchMissingCinemas()
+  }, [dashboardData.activeShows])
 
 
   return !loading ? (
@@ -95,6 +134,29 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Pagination Controls */}
+      {dashboardData.pagination && (
+        <div className="mt-6 flex items-center gap-3">
+          <button
+            onClick={() => setPage(prev => Math.max(1, prev - 1))}
+            disabled={page <= 1}
+            className={`px-3 py-1 rounded border text-white ${page <= 1 ? 'bg-gray-300' : 'bg-primary'} disabled:opacity-50`}
+          >
+            Prev
+          </button>
+
+          <div className="text-sm text-gray-600">Page {dashboardData.pagination.page} of {dashboardData.pagination.totalPages}</div>
+
+          <button
+            onClick={() => setPage(prev => Math.min(dashboardData.pagination.totalPages, prev + 1))}
+            disabled={page >= dashboardData.pagination.totalPages}
+            className={`px-3 py-1 rounded border text-white ${page >= dashboardData.pagination.totalPages ? 'bg-gray-300' : 'bg-primary'} disabled:opacity-50`}
+          >
+            Next
+          </button>
+        </div>
+      )}
+
       {/* Active Shows */}
       <div className="mt-14">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">
@@ -104,7 +166,7 @@ const Dashboard = () => {
         <div className="relative grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl pr-4">
           <BlurCircle top="100px" left="-10%" />
 
-          {dashboardData.activeShows.map((show) => (
+          {[...(dashboardData.activeShows || [])].sort((a, b) => new Date(b.showDateTime) - new Date(a.showDateTime)).map((show) => (
             <div
               key={show._id}
               className="
@@ -138,6 +200,16 @@ const Dashboard = () => {
                 <p className="text-sm text-gray-500 mt-2">
                   {dateFormat(show.showDateTime)}
                 </p>
+                {Array.isArray(show.cinemas) && show.cinemas.length > 0 && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    <strong className="text-gray-700">Cinemas:</strong>{' '}
+                    {show.cinemas.map(c => {
+                      const id = typeof c === 'string' ? c : (c._id || c.id || null)
+                      if (!id) return typeof c === 'object' ? (c.cinemaName || c.name || c.title) : c
+                      return cinemaCache[id] || 'Loading...'
+                    }).join(', ')}
+                  </p>
+                )}
               </div>
             </div>
           ))}

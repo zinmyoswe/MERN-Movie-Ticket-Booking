@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useAppContext } from "../context/AppContext.jsx";
 import Loading from "./Loading";
 import BlurCircle from "./BlurCircle.jsx";
+import DOMPurify from 'dompurify';
 import { ArrowLeft } from "lucide-react";
 
 const extractCoords = (url) => {
@@ -98,9 +99,10 @@ const CinemaDetail = () => {
           </p>
 
           {cinema.cinemaInformation && (
-            <p className="mt-4 text-gray-200 leading-relaxed">
-              {cinema.cinemaInformation}
-            </p>
+            <div
+              className="mt-4 text-gray-200 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(String(cinema.cinemaInformation || '')) }}
+            />
           )}
 
           {/* INFO GRID */}

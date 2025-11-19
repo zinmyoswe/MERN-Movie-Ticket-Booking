@@ -30,7 +30,7 @@ const ListCinema = () => {
           <div className="text-gray-500">No cinemas found.</div>
         ) : (
           cinemas.map((c, i) => (
-            <div key={c._id || i} className="flex flex-col md:flex-row bg-white rounded-lg shadow p-4 border">
+            <div key={c._id || i} className="flex flex-col md:flex-row bg-white rounded-lg shadow-2xl p-4 border">
               <div className="md:w-40 w-full flex-shrink-0">
                 {c.cinemaImage ? (
                   <img src={c.cinemaImage} alt={c.cinemaName || c.name || c.title || 'Cinema image'} className="w-full h-36 md:h-28 object-cover rounded" />
@@ -54,9 +54,9 @@ const ListCinema = () => {
                   </div>
                 </div>
 
-                {c.cinemaInformation && (
+                {/* {c.cinemaInformation && (
                   <p className="mt-3 text-sm text-gray-700">{c.cinemaInformation}</p>
-                )}
+                )} */}
 
                 <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600">
                   <div><strong>Address:</strong><div>{c.address || '-'}</div></div>

@@ -1,3 +1,16 @@
+import Cinema from "../models/Cinema.js";
+// Get cinemas by location for addShow UI
+export const getCinemasByLocation = async (req, res) => {
+  try {
+    const { location } = req.query;
+    if (!location) return res.json({ success: false, message: "Location required" });
+    const cinemas = await Cinema.find({ Location: location }).sort({ cinemaName: 1 });
+    res.json({ success: true, cinemas });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 import axios from "axios"
 import Movie from "../models/Movie.js";
 import Show from "../models/Show.js";
@@ -22,7 +35,7 @@ export const getNowPlayingMovies = async (req, res) => {
 
 export const addShow = async (req, res) => {
   try{
-    const {movieId, showsInput, showPrice} = req.body
+    const {movieId, showsInput, showPrice, cinemaIds} = req.body
 
     let movie = await Movie.findById(movieId)
 
@@ -61,16 +74,17 @@ export const addShow = async (req, res) => {
 
     const showsToCreate = [];
     showsInput.forEach(show => {
-        const showDate = show.date;
-        show.time.forEach((time) => {
-            const dateTimeString = `${showDate}T${time}`;
-            showsToCreate.push({
-                movie: movieId,
-                showDateTime: new Date(dateTimeString),
-                showPrice,
-                occupiedSeats: {}
-            })
+      const showDate = show.date;
+      show.time.forEach((time) => {
+        const dateTimeString = `${showDate}T${time}`;
+        showsToCreate.push({
+          movie: movieId,
+          showDateTime: new Date(dateTimeString),
+          showPrice,
+          occupiedSeats: {},
+          cinemas: Array.isArray(cinemaIds) ? cinemaIds : (cinemaIds ? [cinemaIds] : [])
         })
+      })
     });
     if(showsToCreate.length > 0){
         await Show.insertMany(showsToCreate);
@@ -89,6 +103,7 @@ export const addShow = async (req, res) => {
     res.json({success: false, message: error.message});
   }
 }
+// ...duplicate block removed...
 
 
 //API to get all shows from the database

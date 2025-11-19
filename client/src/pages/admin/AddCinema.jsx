@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Editor } from '@tinymce/tinymce-react';
 import Title from '../../components/admin/Title';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
@@ -64,12 +65,25 @@ const AddCinema = () => {
           </select>
         )}
         <input name="cinemaImage" value={form.cinemaImage} onChange={handleChange} placeholder="Cinema Image URL" className="w-full p-2 border rounded" />
-        <textarea name="cinemaInformation" value={form.cinemaInformation} onChange={handleChange} placeholder="Cinema Information" className="w-full p-2 border rounded" />
+        <div>
+          <label className="text-sm font-medium mb-1 block">Cinema Information</label>
+          <Editor
+            apiKey={import.meta.env.VITE_TINYMCE_API_KEY || ''}
+            value={form.cinemaInformation}
+            init={{
+              height: 300,
+              menubar: false,
+              plugins: ['link', 'lists', 'code'],
+              toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist | link | code'
+            }}
+            onEditorChange={(content) => setForm({ ...form, cinemaInformation: content })}
+          />
+        </div>
         <input name="address" value={form.address} onChange={handleChange} placeholder="Address" className="w-full p-2 border rounded" />
         <input name="officeHours" value={form.officeHours} onChange={handleChange} placeholder="Office Hours (default 9:00 AM - 12:00 PM)" className="w-full p-2 border rounded" />
         <input name="Transport" value={form.Transport} onChange={handleChange} placeholder="Transport (default provided)" className="w-full p-2 border rounded" />
         <input name="map" value={form.map} onChange={handleChange} placeholder="Map URL" className="w-full p-2 border rounded" />
-        <button onClick={handleSubmit} disabled={loading} className="bg-primary text-white px-4 py-2 rounded">{loading ? 'Adding...' : 'Add Cinema'}</button>
+        <button onClick={handleSubmit} disabled={loading} className="bg-primary text-white px-4 py-2 rounded cursor-pointer">{loading ? 'Adding...' : 'Add Cinema'}</button>
       </div>
       </div>
     </>

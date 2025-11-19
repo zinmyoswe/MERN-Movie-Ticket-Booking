@@ -18,7 +18,29 @@ const AddShows = () => {
   const [dateTimeSelection, setDateTimeSelection] = useState({});
   const [dateTimeInput, setDateTimeInput] = useState("");
   const [showPrice, setShowPrice] = useState("");
-  const [addingShow, setAddingShow] = useState(false)
+  const [addingShow, setAddingShow] = useState(false);
+  const [location, setLocation] = useState("");
+  const [cinemas, setCinemas] = useState([]);
+  const [selectedCinemas, setSelectedCinemas] = useState([]);
+  const locationOptions = ["Bangkok", "Central", "North", "South", "East"];
+
+  useEffect(() => {
+    if (location) {
+      const fetchCinemas = async () => {
+        try {
+          const { data } = await axios.get(`/api/cinema?location=${location}`);
+          if (data.success) setCinemas(data.cinemas || []);
+        } catch (err) {
+          setCinemas([]);
+        }
+      };
+      fetchCinemas();
+      setSelectedCinemas([]);
+    } else {
+      setCinemas([]);
+      setSelectedCinemas([]);
+    }
+  }, [location]);
 
   const fetchNowPlayingMovies = async () => {
     try {
@@ -60,40 +82,47 @@ const AddShows = () => {
     })
   }
 
-  const handleSubmit = async () =>{
-    try {
-      setAddingShow(true)
+  const handleCinemaSelect = (cinemaId) => {
+    setSelectedCinemas((prev) =>
+      prev.includes(cinemaId)
+        ? prev.filter((id) => id !== cinemaId)
+        : [...prev, cinemaId]
+    );
+  };
 
-      if(!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !showPrice){
+  const handleSubmit = async () => {
+    try {
+      setAddingShow(true);
+      if (!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !showPrice || !location || selectedCinemas.length === 0) {
         return toast('Missing required fields');
       }
-      const showsInput = Object.entries(dateTimeSelection).map(([date, time]) =>
-      ({date, time}));
-
+      const showsInput = Object.entries(dateTimeSelection).map(([date, time]) => ({ date, time }));
       const payload = {
         movieId: selectedMovie,
         showsInput,
-        showPrice: Number(showPrice)
-      }
-      const { data } = await axios.post('/api/show/add', payload, {headers:{
-        Authorization: `Bearer ${await getToken()}`
-      }})
-
-      if(data.success){
-        toast.success(data.message)
-        setSelectedMovie(null)
-        setDateTimeSelection({})
-        setShowPrice("")
-      }
-      else{
-        toast.success(data.message)
+        showPrice: Number(showPrice),
+        cinemaIds: selectedCinemas
+      };
+      const { data } = await axios.post('/api/show/add', payload, {
+        headers: { Authorization: `Bearer ${await getToken()}` }
+      });
+      if (data.success) {
+        toast.success(data.message);
+        setSelectedMovie(null);
+        setDateTimeSelection({});
+        setShowPrice("");
+        setLocation("");
+        setCinemas([]);
+        setSelectedCinemas([]);
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       console.error("Submission error : ", error);
-      toast.error('An error occured. Please try again.')
+      toast.error('An error occured. Please try again.');
     }
-    setAddingShow(false)
-  }
+    setAddingShow(false);
+  };
 
   useEffect(() => {
     if(user){
@@ -136,6 +165,40 @@ const AddShows = () => {
           ))}
         </div>
       </div>
+
+      {/* Location Selection */}
+      <div className='mt-8'>
+        <label className='block text-sm font-medium mb-2'>Select Location</label>
+        <select value={location} onChange={e => setLocation(e.target.value)} className='w-full p-2 border rounded'>
+          <option value=''>Choose Location</option>
+          {locationOptions.map(loc => (
+            <option key={loc} value={loc}>{loc}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Cinema Selection */}
+      {location && (
+        <div className='mt-6'>
+          <label className='block text-sm font-medium mb-2'>Select Cinemas</label>
+          <div className='flex flex-wrap gap-3'>
+            {cinemas.length === 0 ? (
+              <span className='text-gray-500'>No cinemas found for {location}.</span>
+            ) : (
+              cinemas.map(cinema => (
+                <button
+                  key={cinema._id}
+                  type='button'
+                  onClick={() => handleCinemaSelect(cinema._id)}
+                  className={`px-4 py-2 rounded border ${selectedCinemas.includes(cinema._id) ? 'bg-primary text-white' : 'bg-gray-100'}`}
+                >
+                  {cinema.cinemaName || cinema.name || cinema.title || 'Unnamed Cinema'}
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Show Price Input */}
       <div className='mt-8'>
