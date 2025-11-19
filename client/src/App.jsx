@@ -22,6 +22,8 @@ import AddCinema from './pages/admin/AddCinema.jsx'
 import ListCinema from './pages/admin/ListCinema.jsx'
 import EditCinema from './pages/admin/EditCinema.jsx'
 import DeleteCinema from './pages/admin/DeleteCinema.jsx'
+import CinemaSection from './components/CinemaSection.jsx'
+import CinemaDetail from './components/CinemaDetail.jsx'
 import { useAppContext } from './context/AppContext.jsx'
 import { SignIn } from '@clerk/clerk-react'
 import Loading from './components/Loading.jsx'
@@ -41,6 +43,8 @@ const App = () => {
         <Route path='/movies' element={<Movies />} />
         <Route path='/movies/:id' element={<MovieDetails />} />
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
+        <Route path='/cinemas' element={<CinemaSection />} />
+        <Route path='/cinemas/:id' element={<CinemaDetail />} />
         <Route path='/my-bookings' element={<MyBookings />} />
         <Route path='/loading/:nextUrl' element={<Loading />} />
         <Route path='/favourite' element={<Favourite />} />
