@@ -9,7 +9,10 @@ import {
   ChevronLeft,
   ChevronRight,
   PanelLeftClose,
-  PanelRightClose
+  PanelRightClose,
+  Theater,
+  TvMinimalPlay,
+  FilePlusCorner
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
@@ -25,11 +28,13 @@ const AdminSidebar = () => {
 
   const adminNavlinks = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboardIcon },
-    { name: 'Add Shows', path: '/admin/add-shows', icon: PlusSquareIcon },
-    { name: 'List Shows', path: '/admin/list-shows', icon: ListIcon },
+    { name: 'Add Shows', path: '/admin/add-shows', icon: FilePlusCorner },
+    { name: 'List Shows', path: '/admin/list-shows', icon: TvMinimalPlay },
     { name: 'List Bookings', path: '/admin/list-bookings', icon: ListCollapseIcon },
     { name: 'Slides', path: '/admin/list-slides', icon: ImageIcon },
-    { name: 'Add Slide', path: '/admin/add-slide', icon: PlusSquareIcon },
+    { name: 'Add Slide', path: '/admin/add-slide', icon: FilePlusCorner },
+    { name: 'Cinemas', path: '/admin/list-cinemas', icon: Theater },
+    { name: 'Add Cinema', path: '/admin/add-cinema', icon: FilePlusCorner },
   ]
 
   return (

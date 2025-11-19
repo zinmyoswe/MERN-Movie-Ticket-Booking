@@ -18,6 +18,10 @@ import AddSlide from './pages/admin/AddSlide.jsx'
 import ListSlide from './pages/admin/ListSlide.jsx'
 import EditSlide from './pages/admin/EditSlide.jsx'
 import DeleteSlide from './pages/admin/DeleteSlide.jsx'
+import AddCinema from './pages/admin/AddCinema.jsx'
+import ListCinema from './pages/admin/ListCinema.jsx'
+import EditCinema from './pages/admin/EditCinema.jsx'
+import DeleteCinema from './pages/admin/DeleteCinema.jsx'
 import { useAppContext } from './context/AppContext.jsx'
 import { SignIn } from '@clerk/clerk-react'
 import Loading from './components/Loading.jsx'
@@ -53,6 +57,10 @@ const App = () => {
           <Route path='list-slides' element={<ListSlide/>} />
           <Route path='edit-slide/:id' element={<EditSlide/>} />
           <Route path='delete-slide/:id' element={<DeleteSlide/>} />
+          <Route path='add-cinema' element={<AddCinema/>} />
+          <Route path='list-cinemas' element={<ListCinema/>} />
+          <Route path='edit-cinema/:id' element={<EditCinema/>} />
+          <Route path='delete-cinema/:id' element={<DeleteCinema/>} />
         </Route>
       </Routes>
       {!isAdminRoute && <Footer />}
