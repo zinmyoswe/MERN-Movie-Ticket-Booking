@@ -40,35 +40,42 @@ input::-webkit-inner-spin-button{
 
 /* Carousel */
 
-/* arrows (prev/next) - color uses currentColor so set color */
-.swiper-button-next,
-.swiper-button-prev {
-  color: #ffffff;            /* arrow color */
-  width: 24px !important;
-  height: 24px !important;
-  padding: 1px !important;
-  margin: 6px !important;
-  background: none !important; /* optional background circle */
-  border-radius: 9999px;
+/* Add this to your global CSS or equivalent file (e.g., index.css or a custom Swiper CSS file) */
+
+/* Customizing Swiper Navigation Arrows */
+.hero-swiper .swiper-button-next,
+.hero-swiper .swiper-button-prev {
+    color: white !important; /* White arrows */
+    background-color: none; /* Subtle dark background */
+    border-radius: 50%;
+    padding: 10px;
+    width: 40px; /* Increase size */
+    height: 40px;
+    transition: background-color 0.3s;
 }
 
-/* If arrows are SVGs, ensure stroke/fill are visible */
-.swiper-button-next svg,
-.swiper-button-prev svg {
-  stroke: #ffffff;
-  fill: #ffffff;
+.hero-swiper .swiper-button-next:hover,
+.hero-swiper .swiper-button-prev:hover {
+    background-color: none; /* Hover effect to match the primary button */
 }
 
-/* pagination bullets (dots) */
-.swiper-pagination-bullet {
-  background: whitesmoke !important;
-  width: 10px;
-  height: 10px;
-  opacity: 1;
+/* Ensure the arrows are positioned correctly */
+.hero-swiper .swiper-button-next::after,
+.hero-swiper .swiper-button-prev::after {
+    font-size: 20px !important;
 }
 
-/* active bullet */
-.swiper-pagination-bullet-active {
-  background: #ffffff;
-  transform: scale(1.25);
+/* Customizing Swiper Pagination Dots (at the bottom) */
+.hero-swiper .swiper-pagination-bullet {
+    background: rgba(255, 255, 255, 0.5) !important; /* Lighter unselected dots */
+    opacity: 1 !important;
+    width: 8px;
+    height: 8px;
+    transition: background 0.3s, width 0.3s;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+    background: white !important; /* Active dot color matching the primary button */
+    width: 20px; /* Elongated active dot */
+    border-radius: 5px;
 }
