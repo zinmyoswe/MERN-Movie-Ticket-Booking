@@ -25,7 +25,7 @@ const MovieCard = ({ movie }) => {
     return (
         // 1. Sleeker container: Slightly larger card, more pronounced shadow on hover.
         <div 
-            className='group relative flex flex-col  rounded-xl overflow-hidden shadow-2xl transition-all duration-500 ease-in-out hover:scale-[1.02] hover:shadow-primary/50 w-48 md:w-56 lg:w-56 cursor-pointer mb-4'
+            className='group relative flex flex-col bg-primary uppercase  rounded-xl overflow-hidden shadow-2xl transition-all duration-500 ease-in-out hover:scale-[1.02] hover:shadow-primary/50 w-40 md:w-56 lg:w-[234px] cursor-pointer mb-4'
             onClick={handleNavigation} // Make the whole card clickable for navigation
         >
             
@@ -34,7 +34,7 @@ const MovieCard = ({ movie }) => {
                 <img 
                     src={image_base_url + movie.poster_path} 
                     alt={`Poster for ${movie.title}`} 
-                    className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105' 
+                    className='w-full h-full transition-transform duration-500 group-hover:scale-105' 
                 />
                 
                 {/* Rating Overlay: Positioned in the corner for a cinematic look */}
@@ -45,7 +45,7 @@ const MovieCard = ({ movie }) => {
             </div>
 
             {/* 3. Content Area: Padding and text alignment for cleanliness */}
-            <div className='p-3 flex flex-col justify-between flex-grow'>
+            <div className='text-center mt-1'>
                 
                 {/* Title */}
                 <h3 className='text-lg font-bold text-white truncate mb-1' title={movie.title}>
@@ -53,13 +53,13 @@ const MovieCard = ({ movie }) => {
                 </h3>
 
                 {/* Metadata: Use a clear, separate line for better readability */}
-                <p className='text-xs text-gray-400 mb-3'>
+                {/* <p className='text-xs text-gray-400 mb-3'>
                     <span className='font-medium'>{releaseYear}</span> 
                     <span className='mx-1'>&middot;</span> 
                     {genresText} 
                     <span className='mx-1'>&middot;</span> 
                     {runtimeText}
-                </p>
+                </p> */}
 
                 {/* 4. Action Button */}
                 {/* <button 
