@@ -20,7 +20,7 @@ const Navbar = () => {
         <img src={assets.logo} alt='Logo' className='w-36 h-auto' />
       </Link>
       
-      <div className={`max-md:absolute max-md:top-0 max-md:left-0
+      <div className={`uppercase max-md:absolute max-md:top-0 max-md:left-0
         max-md:font-medium max-md:text-lg z-50 flex flex-col
         md:flex-row items-center max-md:justify-center gap-8
         min-md:px-8 py-3 max-md:h-screen min-md:rounded-full
@@ -35,7 +35,7 @@ const Navbar = () => {
         <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/'>Home</Link>
         <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/movies'>Movies</Link>
         <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/cinemas'>Cinemas</Link>
-        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/'>Releases</Link>
+        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/promotions'>Promotions</Link>
         {favouriteMovies.length > 0 && 
         <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/favourite'>Favourites</Link>
         }
