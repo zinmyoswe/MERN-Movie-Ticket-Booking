@@ -3,6 +3,7 @@ import Title from '../../components/admin/Title'
 import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import "./AdminZin.css"
 
 const AddSlide = () => {
   const { axios, getToken } = useAppContext()
@@ -43,7 +44,7 @@ const AddSlide = () => {
   }
 
   return (
-    <div className="bg-white min-h-screen p-6">
+    <div className="bg-white min-h-screen p-6 adminzin">
       <Title text1="Add" text2="Slide" />
 
       <div className="mt-6 max-w-2xl bg-white border border-gray-200 rounded-xl shadow-md p-6 space-y-4">

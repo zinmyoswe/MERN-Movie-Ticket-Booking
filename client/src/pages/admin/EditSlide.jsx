@@ -3,6 +3,7 @@ import Title from '../../components/admin/Title'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
+import "./AdminZin.css"
 
 const EditSlide = () => {
   const { id } = useParams()
@@ -57,6 +58,7 @@ const EditSlide = () => {
 
   return (
     <>
+    <div className='adminzin'>
       <Title text1="Edit" text2="Slide" />
       <div className='mt-6 max-w-2xl'>
         <label className='block text-sm mb-1'>Slide ID</label>
@@ -86,6 +88,7 @@ const EditSlide = () => {
             {saving ? 'Saving...' : 'Save'}
           </button>
         </div>
+      </div>
       </div>
     </>
   )
