@@ -107,6 +107,10 @@ const MovieDetails = () => {
 
       <DateSelect dateTime={show.dateTime} id={id} />
 
+      {Object.keys(show.dateTime).length === 0 && (
+        <p className='text-center text-gray-400 mt-8'>No upcoming shows available for this movie.</p>
+      )}
+
       <p className='text-lg font-medium mt-20 mb-8'>You May Also Like</p>
       <div className='flex flex-wrap max-sm:justify-center gap-8'>
          {shows.slice(0,4).map((movie, index) => (

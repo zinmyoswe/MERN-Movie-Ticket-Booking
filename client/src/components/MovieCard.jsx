@@ -18,9 +18,9 @@ const MovieCard = ({ movie }) => {
     };
 
     const releaseYear = new Date(movie.release_date).getFullYear();
-    const genresText = movie.genres.slice(0, 2).map(genre => genre.name).join(" / ");
+    const genresText = (movie.genres || []).slice(0, 2).map(genre => genre.name).join(" / ");
     const runtimeText = timeFormat(movie.runtime);
-    const formattedRating = movie.vote_average.toFixed(1);
+    const formattedRating = (movie.vote_average || 0).toFixed(1);
 
     return (
         // 1. Sleeker container: Slightly larger card, more pronounced shadow on hover.

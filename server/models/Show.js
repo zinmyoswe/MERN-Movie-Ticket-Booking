@@ -5,7 +5,7 @@ const showSchema = new mongoose.Schema({
     showDateTime: {type: Date, required: true},
     showPrice: {type: Number, required: true},
     occupiedSeats: {type: Object, default: {}},
-    cinemas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Cinema' }]
+    cinemas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Cinema', required: true }]
 }, {minimize: false}
 )
 

@@ -73,18 +73,20 @@ export const addShow = async (req, res) => {
     }
 
     const showsToCreate = [];
-    showsInput.forEach(show => {
-      const showDate = show.date;
-      show.time.forEach((time) => {
-        const dateTimeString = `${showDate}T${time}`;
-        showsToCreate.push({
-          movie: movieId,
-          showDateTime: new Date(dateTimeString),
-          showPrice,
-          occupiedSeats: {},
-          cinemas: Array.isArray(cinemaIds) ? cinemaIds : (cinemaIds ? [cinemaIds] : [])
+    cinemaIds.forEach(cinemaId => {
+      showsInput.forEach(show => {
+        const showDate = show.date;
+        show.time.forEach((time) => {
+          const dateTimeString = `${showDate}T${time}`;
+          showsToCreate.push({
+            movie: movieId,
+            showDateTime: new Date(dateTimeString),
+            showPrice,
+            occupiedSeats: {},
+            cinemas: [cinemaId] // Changed to plural and an array
+          })
         })
-      })
+      });
     });
     if(showsToCreate.length > 0){
         await Show.insertMany(showsToCreate);
@@ -109,12 +111,18 @@ export const addShow = async (req, res) => {
 //API to get all shows from the database
 export const getShows = async (req, res) => {
   try{
-    const shows = await Show.find({showDateTime: {$gte: new Date()}}).populate('movie').sort({showDateTime: 1});
+    const shows = await Show.find({showDateTime: {$gte: new Date()}}).populate('movie');
 
-    //filter unique shows
-    const uniqueShows = new Set(shows.map(show => show.movie))
+    // Filter for unique movies. Using a Map to ensure uniqueness based on movie ID.
+    const uniqueMoviesMap = new Map();
+    shows.forEach(show => {
+      if (show.movie) { // Ensure movie is not null
+        uniqueMoviesMap.set(show.movie._id.toString(), show.movie);
+      }
+    });
+    const uniqueMovies = Array.from(uniqueMoviesMap.values());
 
-    res.json({success: true, shows: Array.from(uniqueShows)})
+    res.json({success: true, shows: uniqueMovies})
   }catch(error){
     console.error(error);
     res.json({success: false, message: error.message});
@@ -125,19 +133,64 @@ export const getShows = async (req, res) => {
 export const getShow = async (req, res) => {
   try{
     const {movieId} = req.params;
+    console.log('Fetching shows for movieId:', movieId);
+    const currentTime = new Date();
+    console.log('Current server time for query (new Date()):', currentTime);
     //get all upcoming shows for the movie
-    const shows = await Show.find({movie: movieId, showDateTime: {$gte: new Date() }})
+    const shows = await Show.find({movie: movieId, showDateTime: {$gte: currentTime }}).populate('cinemas'); // Changed 'cinema' to 'cinemas'
+    console.log('Shows found by query:', shows);
 
-    const movie = await Movie.findById(movieId);
+    let movie = await Movie.findById(movieId);
+
+    // If movie is not in our DB, fetch from TMDB and save it
+    if (!movie) {
+      const [movieDetailsResponse, movieCreditsResponse] = await Promise.all([
+        axios.get(`https://api.themoviedb.org/3/movie/${movieId}`, {
+          headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+        }),
+        axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
+          headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+        }),
+      ]);
+
+      const movieApiData = movieDetailsResponse.data;
+      const movieCreditsData = movieCreditsResponse.data;
+
+      const movieDetails = {
+        _id: movieId,
+        title: movieApiData.title,
+        overview: movieApiData.overview,
+        poster_path: movieApiData.poster_path,
+        backdrop_path: movieApiData.backdrop_path,
+        genres: movieApiData.genres,
+        casts: movieCreditsData.cast,
+        release_date: movieApiData.release_date,
+        vote_average: movieApiData.vote_average,
+        runtime: movieApiData.runtime,
+      };
+      movie = await Movie.create(movieDetails);
+    }
     const dateTime = {};
 
     shows.forEach((show) => {
-        const date = show.showDateTime.toISOString().split("T")[0];
-        if(!dateTime[date]){
-            dateTime[date] = []
-        }
-        dateTime[date].push({ time: show.showDateTime, showId: show._id })
-    })
+        if (!show.cinemas || show.cinemas.length === 0) return; // Check if cinemas array is populated and not empty
+
+        show.cinemas.forEach(cinema => { // Iterate over the cinemas array
+            const date = show.showDateTime.toISOString().split("T")[0];
+            if(!dateTime[date]){
+                dateTime[date] = {};
+            }
+            const cinemaName = cinema.cinemaName; // Access properties from the populated cinema object
+            if(!dateTime[date][cinemaName]){
+                dateTime[date][cinemaName] = [];
+            }
+            dateTime[date][cinemaName].push({
+                time: show.showDateTime,
+                showId: show._id,
+                cinemaId: cinema._id
+            });
+        });
+    });
     res.json({success: true, movie, dateTime})
   }catch(error){
     console.error(error);
@@ -161,12 +214,19 @@ export const deleteShow = async (req, res) => {
   }
 };
 
+//API to get a single show by its ID
+export const getShowById = async (req, res) => {
+  try {
+    const { showId } = req.params;
+    const show = await Show.findById(showId).populate('movie').populate('cinemas');
 
+    if (!show) {
+      return res.json({ success: false, message: "Show not found" });
+    }
 
-
-
-
-
-
-
-
+    res.json({ success: true, show });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};

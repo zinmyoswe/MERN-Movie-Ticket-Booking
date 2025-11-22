@@ -24,7 +24,7 @@ const checkSeatsAvailability = async (showId, selectedSeats) => {
 export const createBooking = async (req, res) => {
   try{
     const {userId} = req.auth();
-    const {showId, selectedSeats} = req.body;
+    const {showId, cinemaId, selectedSeats} = req.body;
     const {origin} = req.headers;
 
     //check if the seat is available for the selected show
@@ -41,6 +41,7 @@ export const createBooking = async (req, res) => {
     const booking = await Booking.create({
         user: userId,
         show: showId,
+        cinema: cinemaId,
         amount: showData.showPrice * selectedSeats.length,
         bookedSeats: selectedSeats
     })
