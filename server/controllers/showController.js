@@ -145,6 +145,27 @@ export const getShow = async (req, res) => {
   }
 }
 
+// Delete a show
+export const deleteShow = async (req, res) => {
+  try {
+    await Show.findByIdAndDelete(req.body.showId);
+    res.send({
+      success: true,
+      message: "Show deleted successfully",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+
+
+
 
 
 

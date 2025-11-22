@@ -35,6 +35,7 @@ import AddPromotion from './pages/admin/AddPromotion.jsx'
 import PromotionSection from './components/PromotionSection.jsx'
 import PromotionDetail from './components/PromotionDetail.jsx'
 
+
 const App = () => {
 
   const isAdminRoute = useLocation().pathname.startsWith('/admin')
@@ -65,6 +66,7 @@ const App = () => {
           <Route index element={<Dashboard />} />
           <Route path='add-shows' element={<AddShows/>} />
           <Route path='list-shows' element={<ListShows/>} />
+          {/* --- SHOWS CRUD ROUTES (NEW) --- */}
           <Route path='list-bookings' element={<ListBookings/>} />
           <Route path='add-slide' element={<AddSlide/>} />
           <Route path='list-slides' element={<ListSlide/>} />

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import Loading from '../../components/Loading';
+import toast from 'react-hot-toast';
 import Title from '../../components/admin/Title';
 import { dateFormat } from '../../lib/dateFormat';
 import { useAppContext } from '../../context/AppContext';
@@ -42,6 +43,25 @@ const ListShows = () => {
       getAllShows();
     }
   }, [user]);
+
+  const handleDelete = async (showId) => {
+    if (window.confirm("Are you sure you want to delete this show?")) {
+      try {
+        const token = await getToken();
+        const { data } = await axios.post('/api/show/delete-show', { showId }, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (data.success) {
+          toast.success(data.message);
+          setShows(shows.filter(show => show._id !== showId));
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error("An error occurred while deleting the show.");
+      }
+    }
+  }
 
   return !loading ? (
     <>
@@ -231,6 +251,8 @@ const ListShows = () => {
               <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Show Time</th>
               <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Total Bookings</th>
               <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Earnings</th>
+
+               <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200 text-sm">
@@ -241,6 +263,12 @@ const ListShows = () => {
                 <td className="px-6 py-3">{Object.keys(show.occupiedSeats).length}</td>
                 <td className="px-6 py-3 font-medium text-green-600">
                   {currency} {Object.keys(show.occupiedSeats).length * show.showPrice}
+                </td>
+
+                <td className="px-6 py-3">
+                  <button onClick={() => handleDelete(show._id)} className="text-red-600 hover:text-red-900">
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

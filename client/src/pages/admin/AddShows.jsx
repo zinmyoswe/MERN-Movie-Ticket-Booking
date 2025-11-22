@@ -28,25 +28,9 @@ const AddShows = () => {
   
   
 
-  // useEffect(() => {
-  //   if (location) {
-  //     const fetchCinemas = async () => {
-  //       try {
-  //         const { data } = await axios.get(`/api/cinema?location=${location}`);
-  //         if (data.success) setCinemas(data.cinemas || []);
-  //       } catch (err) {
-  //         setCinemas([]);
-  //       }
-  //     };
-  //     fetchCinemas();
-  //     setSelectedCinemas([]);
-  //   } else {
-  //     setCinemas([]);
-  //     setSelectedCinemas([]);
-  //   }
-  // }, [location]);
+ 
 
-   // ⭐ EDITED — Completely replaced single-location fetching
+   //  EDITED — Completely replaced single-location fetching
   useEffect(() => {
     if (locations.length > 0) {
       const fetchCinemas = async () => {
@@ -125,39 +109,7 @@ const AddShows = () => {
     );
   };
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     setAddingShow(true);
-  //     if (!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !showPrice || !location || selectedCinemas.length === 0) {
-  //       return toast('Missing required fields');
-  //     }
-  //     const showsInput = Object.entries(dateTimeSelection).map(([date, time]) => ({ date, time }));
-  //     const payload = {
-  //       movieId: selectedMovie,
-  //       showsInput,
-  //       showPrice: Number(showPrice),
-  //       cinemaIds: selectedCinemas
-  //     };
-  //     const { data } = await axios.post('/api/show/add', payload, {
-  //       headers: { Authorization: `Bearer ${await getToken()}` }
-  //     });
-  //     if (data.success) {
-  //       toast.success(data.message);
-  //       setSelectedMovie(null);
-  //       setDateTimeSelection({});
-  //       setShowPrice("");
-  //       setLocation("");
-  //       setCinemas([]);
-  //       setSelectedCinemas([]);
-  //     } else {
-  //       toast.error(data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Submission error : ", error);
-  //     toast.error('An error occured. Please try again.');
-  //   }
-  //   setAddingShow(false);
-  // };
+
 
   const handleSubmit = async () => {
     try {
@@ -245,16 +197,6 @@ const AddShows = () => {
       </div>
 
       {/* Location Selection */}
-      {/* <div className='mt-8'>
-        <label className='block text-sm font-medium mb-2'>Select Location</label>
-        <select value={location} onChange={e => setLocation(e.target.value)} className='w-full p-2 border rounded'>
-          <option value=''>Choose Location</option>
-          {locationOptions.map(loc => (
-            <option key={loc} value={loc}>{loc}</option>
-          ))}
-        </select>
-      </div> */}
-
       <div className='mt-8'>
         <label className='block text-sm font-medium mb-2'>Select Locations</label>
 
@@ -355,7 +297,22 @@ const AddShows = () => {
         </div>
       )}
       <button onClick={handleSubmit} disabled={addingShow} className='bg-primary text-white px-8 py-2 mt-6 rounded 
-      hover:bg-primary/90 transition-all cursor-pointer'>Add Show</button>
+      hover:bg-primary/90 transition-all cursor-pointer'>
+
+        {addingShow ? (
+                <>
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Adding...</span>
+                </>
+            ) : (
+                <>
+                    <span>Add Show</span>
+                </>
+            )}
+      </button>
       </div>
     </>
   ) : <Loading />

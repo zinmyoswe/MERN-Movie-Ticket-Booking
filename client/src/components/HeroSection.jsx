@@ -44,7 +44,7 @@ const HeroSection = () => {
     );
 
     return (
-        <div className="relative h-[80vh] flex items-center justify-center bg-black">
+        <div className="relative h-[50vh] md:h-[80vh] lg:h-[80vh] flex items-center justify-center bg-black">
             {loading ? (
                 <HeroCarouselLoader />
             ) : slides.length > 0 ? (

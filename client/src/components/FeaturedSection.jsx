@@ -25,7 +25,7 @@ const FeaturedSection = () => {
             </button>
         </div>
 
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-16 lg:gap-16 mt-8 max-sm:mt-2'>
+        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6 md:gap-16 lg:gap-16 mt-8 max-sm:mt-2'>
             {shows.slice(0,15).map((show) => (
                 <MovieCard key={show._id} movie={show} />
             ))}
