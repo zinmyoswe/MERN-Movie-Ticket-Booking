@@ -8,8 +8,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import HeroSlideModal from './HeroSlideModal';
-import HeroCarouselLoader from './HeroCarouselLoader';
 import axios from 'axios';
+import Loading from './Loading';
 
 const HeroSection = () => {
     const navigate = useNavigate();
@@ -46,7 +46,7 @@ const HeroSection = () => {
     return (
         <div className="relative h-[50vh] md:h-[80vh] lg:h-[80vh] flex items-center justify-center bg-black">
             {loading ? (
-                <HeroCarouselLoader />
+                <Loading />
             ) : slides.length > 0 ? (
                 <Swiper
                     spaceBetween={0}
