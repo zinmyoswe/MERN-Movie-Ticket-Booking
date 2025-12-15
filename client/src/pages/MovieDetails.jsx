@@ -112,7 +112,12 @@ const MovieDetails = () => {
       )}
 
       <p className='text-lg font-medium mt-20 mb-8'>You May Also Like</p>
-      <div className='flex flex-wrap max-sm:justify-center gap-8'>
+      <div className='grid 
+                grid-cols-2          /* Mobile: 2 columns */
+                sm:grid-cols-3       /* Small screens: 3 columns */
+                lg:grid-cols-4       /* Large screens: 4 columns */
+                xl:grid-cols-5       /* Extra-large screens: 5 columns */
+                gap-x-6 gap-y-12 '>
          {shows.slice(0,4).map((movie, index) => (
            <MovieCard key={index} movie={movie} />
          ))}

@@ -6,7 +6,7 @@ import { useAppContext } from '../context/AppContext';
 
 // Constants for consistent styling
 const METADATA_TEXT_CLASS = 'text-xs text-gray-300 font-light';
-const BUTTON_CLASS = 'w-full py-2 px-4 mt-3 rounded-md font-bold transition-all duration-300 shadow-lg';
+const BUTTON_CLASS = 'w-full py-2 px-4 mt-3 rounded-md text-sm font-medium text-zinc-950 hover:bg-zinc-100 transition-all duration-300 shadow-lg cursor-pointer';
 
 const MovieCard = ({ movie }) => {
     const navigate = useNavigate();
