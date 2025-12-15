@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { assets } from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, PlayCircle, Ticket } from 'lucide-react';
+import { ArrowRight, CirclePlay, PlayCircle, Ticket } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
@@ -22,7 +22,9 @@ const HeroSection = () => {
         const fetchSlides = async () => {
             try {
                 const { data } = await axios.get('/api/slide');
-                if (data.success) setSlides(data.slides);
+                if (data.success) {
+                    setSlides(data.slides);
+                }
             } catch (e) {
                 setSlides([]);
             }
@@ -32,8 +34,8 @@ const HeroSection = () => {
     }, []);
 
     const handleTrailer = (slide) => {
-        if (slide.movieTrailers && slide.movieTrailers.url) {
-            setTrailerUrl(slide.movieTrailers.url);
+        if (slide.movieTrailers && slide.movieTrailers.youtube) {
+            setTrailerUrl(slide.movieTrailers.youtube);
             setShowTrailer(true);
         }
     };
@@ -88,7 +90,7 @@ const HeroSection = () => {
                                         {slide.slidebutton && (
                                             <button
                                                 onClick={() => navigate('/movies')}
-                                                className="flex items-center gap-2 px-6 py-2 bg-zinmyo-400 text-zinc-950 font-semibold text-lg 
+                                                className="flex items-center gap-2 px-6 py-3 bg-zinmyo-400 text-zinc-950 font-semibold text-lg 
                                                            rounded-lg shadow-xl hover:bg-zinmyo-200 hover:text-white transition duration-300 transform hover:scale-[1.02] uppercase tracking-wider"
                                             >
                                                 {slide.slidebutton}
@@ -97,13 +99,14 @@ const HeroSection = () => {
                                         )}
 
                                         {/* Watch Trailer Button - Secondary Focus (Ghost/Outline style) */}
-                                        {slide.movieTrailers && slide.movieTrailers.url && (
+                                        {slide.movieTrailers && slide.movieTrailers.youtube && (
                                             <button
                                                 onClick={() => handleTrailer(slide)}
-                                                className="flex items-center gap-2 px-6 py-3 border-2 border-white text-white font-semibold text-lg 
-                                                           rounded-lg bg-white/10 backdrop-blur-sm hover:bg-white hover:text-black transition duration-300"
+                                                className="flex items-center gap-2 px-6 py-3 text-white font-semibold text-lg 
+                                                           rounded-lg hover:text-zinc-200 transition duration-300 cursor-pointer uppercase"
                                             >
-                                                <PlayCircle className="w-6 h-6" fill="currentColor" /> 
+                                                
+                                                <CirclePlay className="w-6 h-6" />
                                                 Watch Trailer
                                             </button>
                                         )}
